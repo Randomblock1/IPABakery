@@ -1,0 +1,2 @@
+IPAs are stored here in the format "bundleid.ipa", like "com.spotify.client.ipa".
+To use these with recipes, simply copy-paste the IPA into the app's recipe folder.
