@@ -1,15 +1,16 @@
 # IPABakery
-is a collection of Python scripts to automate generating IPAs from normal apps.
+is a collection of Python scripts to automate generating tweaked IPAs from normal apps.
 
 ## Requirements
 You need:
 - [Theos and Theos Jailed](https://github.com/kabiroberai/theos-jailed/wiki/Installation)
 - Python3 and pip
+If you are going to obtain your own IPA files:
 - iproxy (comes with usbmuxd on Linux)
 - A jailbroken device with [Frida](https://frida.re/docs/ios/#with-jailbreak) installed
 
 ## Setup
-- `git clone --recursive https://github.com/randomblock1/ezIPATweaker` (`--recursive` makes sure the submodules are ready!)
+- `git clone --recursive https://github.com/randomblock1/IPABakery` (`--recursive` makes sure the submodule is ready!)
 - `python3 -m pip install -r requirements.txt`
 - `python3 -m pip install -r frida-ios-dump/requirements.txt`
 
@@ -25,4 +26,4 @@ Just run `python3 [script] -h` for help.
 It's highly recommended to use [this fork](https://github.com/kabiroberai/theos-jailed/pull/71) 
 of theos-jailed, for Substitute (A12) support.
 
-TODO: make one 'master' recipe script to minimize duplicate code
+TODO: minimize duplicate code (this is my first python program i know its bad)
