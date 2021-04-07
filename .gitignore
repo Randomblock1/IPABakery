@@ -293,8 +293,8 @@ dmypy.json
 .theos/
 
 # custom files
-.ipa
-.dylib
-.bundle
+*.ipa
+*.dylib
+*.bundle
 Resources
 packages
