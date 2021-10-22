@@ -1,6 +1,9 @@
 # IPABakery
 is a collection of Python scripts to automate generating tweaked IPAs from normal apps.
 
+## READ
+I no longer have time to work on this, so I'm posting the source code as-is. It works, mostly, and the code is not what I would call best practices. Feel free to fork it and submit a PR.
+
 ## Requirements
 You need:
 - [Theos and Theos Jailed](https://github.com/kabiroberai/theos-jailed/wiki/Installation)
