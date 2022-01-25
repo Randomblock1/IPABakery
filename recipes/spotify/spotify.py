@@ -4,20 +4,21 @@
 import os
 from bz2 import decompress
 from getopt import getopt, GetoptError
-from io import BytesIO
 from shutil import rmtree
 from subprocess import run
 from sys import argv
 from warnings import simplefilter
 from zipfile import ZipFile
 from debian import deb822
-from debian import debfile
 from requests import get
+import patoolib
+import shutil
 
 LocalDylibs = False
 KeepWatchApp = False
 ipa_path = 'com.spotify.client.ipa'
 opts = None
+KeepFiles = False
 
 simplefilter('ignore', lineno=740)
 
@@ -58,13 +59,23 @@ headers = {
 
 
 def fetchdylib(repo, package_id, dylib, packages):
+    prev_version = '0'
     for src in deb822.Sources.iter_paragraphs(packages):
         if src['Package'] == str(package_id):
             package_url = src['Filename']
-            with get(repo + str(package_url), headers=headers, allow_redirects=True) as raw_deb:
-                deb = debfile.DebFile(fileobj=BytesIO(raw_deb.content))
-                open(dylib, 'wb').write(deb.data.get_content('Library/MobileSubstrate/DynamicLibraries/' + dylib))
-                print('Saved ' + str(dylib) + ' successfully.')
+            if src['Version'] > prev_version:
+                new_version = src['Version']
+                if prev_version != '0':
+                    print('Updating ' + dylib + ' from ' + prev_version + ' to ' + new_version)
+                prev_version = new_version
+                with get(repo + str(package_url), headers=headers, allow_redirects=True) as raw_deb:
+                    open('temp.deb', 'wb').write(raw_deb.content)
+                    patoolib.extract_archive('temp.deb',outdir='tmp')
+                    os.rename('tmp/Library/MobileSubstrate/DynamicLibraries/' + dylib, dylib)
+                    os.remove('temp.deb')
+                    print('Saved ' + str(dylib) + ' successfully.')
+                    if KeepFiles == False:
+                        shutil.rmtree('tmp')
 
 
 if not LocalDylibs:
