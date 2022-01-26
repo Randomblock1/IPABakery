@@ -32,7 +32,8 @@ for opt, arg in opts:
     if opt == '-h':
         print(
             '\nUsage: spotify.py [options]\n'
-            'This script expects ' + ipa_path + ' to be present in the root folder of this recipe.\n'
+            'This script expects ' + ipa_path +
+            ' to be present in the root folder of this recipe.\n'
             'It must be a Spotify IPA, and it should be extracted from your own device.\n'
             'You can also specify a custom path to the IPA.\n\n'
             '  -h           this help\n'
@@ -66,12 +67,14 @@ def fetchdylib(repo, package_id, dylib, packages):
             if src['Version'] > prev_version:
                 new_version = src['Version']
                 if prev_version != '0':
-                    print('Updating ' + dylib + ' from ' + prev_version + ' to ' + new_version)
+                    print('Updating ' + dylib + ' from ' +
+                          prev_version + ' to ' + new_version)
                 prev_version = new_version
                 with get(repo + str(package_url), headers=headers, allow_redirects=True) as raw_deb:
                     open('temp.deb', 'wb').write(raw_deb.content)
-                    patoolib.extract_archive('temp.deb',outdir='tmp')
-                    os.rename('tmp/Library/MobileSubstrate/DynamicLibraries/' + dylib, dylib)
+                    patoolib.extract_archive('temp.deb', outdir='tmp')
+                    os.rename(
+                        'tmp/Library/MobileSubstrate/DynamicLibraries/' + dylib, dylib)
                     os.remove('temp.deb')
                     print('Saved ' + str(dylib) + ' successfully.')
                     if KeepFiles == False:
@@ -80,40 +83,17 @@ def fetchdylib(repo, package_id, dylib, packages):
 
 if not LocalDylibs:
     print('Getting latest dylibs...')
-    raw_packages = decompress(get('https://repo.dynastic.co/Packages.bz2', headers=headers).content)
-    fetchdylib('https://repo.dynastic.co/', 'com.spos', 'Sposify.dylib', raw_packages)
+    raw_packages = decompress(
+        get('https://repo.dynastic.co/Packages.bz2', headers=headers).content)
+    fetchdylib('https://repo.dynastic.co/', 'com.spos',
+               'Sposify.dylib', raw_packages)
 
-    raw_packages = get('https://julio.hackyouriphone.org/Packages', headers=headers).content
-    fetchdylib('https://julio.hackyouriphone.org/', 'com.julioverne.spotilife', 'Spotilife.dylib', raw_packages)
+    raw_packages = get(
+        'https://julio.hackyouriphone.org/Packages', headers=headers).content
+    fetchdylib('https://julio.hackyouriphone.org/',
+               'com.julioverne.spotilife', 'Spotilife.dylib', raw_packages)
     print('All dylibs successfully fetched.')
 
-print('\n')
-
-try:
-    with ZipFile(ipa_path, 'r') as ipa:
-        try:
-            ipa.extractall()
-            if not KeepWatchApp:
-                ipa.read('Payload/Spotify.app/com.apple.WatchPlaceholder/')
-                print('Need to remove WatchApp so AltStore can sign it without app extensions')
-                rmtree('Payload/Spotify.app/com.apple.WatchPlaceholder/')
-                with ZipFile('fixed.' + ipa_path, 'w') as fixed_ipa:
-                    for dirname, subdirs, files in os.walk('Payload'):
-                        fixed_ipa.write(dirname)
-                        for filename in files:
-                            fixed_ipa.write(os.path.join(dirname, filename))
-                print('Removed watch app')
-            else:
-                print('Skipping watch app removal')
-        except KeyError:
-            print('IPA already removed watch app')
-        rmtree('Payload')
-        ipa.close()
-    if os.path.exists('fixed.' + ipa_path):
-        os.remove(ipa_path)
-        os.rename('fixed.' + ipa_path, ipa_path)
-except FileNotFoundError:
-    print('com.spotify.client.ipa not found.')
 
 print('\nBaking IPA.')
 run(['make', 'clean', 'all', 'package', 'FINALPACKAGE=1', 'CODESIGN_IPA=0'])
