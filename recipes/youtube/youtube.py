@@ -9,7 +9,6 @@ from debian import deb822
 from requests import get
 import shutil
 import os
-import patoolib
 import sys
 sys.path.append('../../')
 from libbakery import fetchdylib, headers

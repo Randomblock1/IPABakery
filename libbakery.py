@@ -1,7 +1,9 @@
+from contextlib import nullcontext
+from getopt import GetoptError
 import os
 import shutil
 from debian import deb822
-from requests import get
+from requests import get, HTTPError
 import patoolib
 
 headers = {
@@ -11,6 +13,17 @@ headers = {
     'User-Agent': 'Telesphoreo APT-HTTP/1.0.592',
     'Accept-Language': 'en-US,*',
 }
+
+def fetchrepo(repo):
+    compressions = ['', '.xz', '.gz', '.bz2', '.lzma']
+    for extension in compressions:
+        try:
+            result = get(repo + '/Packages' + extension, headers=headers)
+            result.raise_for_status()
+            break
+        except HTTPError:
+            continue
+    return result.content
 
 def fetchdylib(repo, package_id, dylib, packages, keepfiles=False):
     prev_version = '0'
