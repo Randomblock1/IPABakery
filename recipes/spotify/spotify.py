@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 # Randomblock1's AutoTweaker script.
 # Downloads latest debs and uses them to tweak IPAs.
-import os
-from bz2 import decompress
 from getopt import getopt, GetoptError
 from subprocess import run
 from sys import argv
 from warnings import simplefilter
-from requests import get
 import sys
 sys.path.append('../../')
 import libbakery
