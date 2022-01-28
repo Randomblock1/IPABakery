@@ -10,7 +10,7 @@ from warnings import simplefilter
 from requests import get
 import sys
 sys.path.append('../../')
-from libbakery import fetchdylib, headers
+import libbakery
 
 LocalDylibs = False
 ipa_path = 'com.spotify.client.ipa'
@@ -45,15 +45,13 @@ for opt, arg in opts:
 
 if not LocalDylibs:
     print('Getting latest dylibs...')
-    raw_packages = decompress(
-        get('https://repo.dynastic.co/Packages.bz2', headers=headers).content)
-    fetchdylib('https://repo.dynastic.co/', 'com.spos',
-               'Sposify.dylib', raw_packages)
+    packages = libbakery.fetchpackages('https://repo.dynastic.co/')
+    libbakery.fetchdylib('https://repo.dynastic.co/', 'com.spos',
+               'Sposify.dylib', packages)
 
-    raw_packages = get(
-        'https://julio.hackyouriphone.org/Packages', headers=headers).content
-    fetchdylib('https://julio.hackyouriphone.org/',
-               'com.julioverne.spotilife', 'Spotilife.dylib', raw_packages)
+    packages = libbakery.fetchpackages('https://julio.hackyouriphone.org/Packages')
+    libbakery.fetchdylib('https://julio.hackyouriphone.org/',
+               'com.julioverne.spotilife', 'Spotilife.dylib', packages)
     print('All dylibs successfully fetched.')
 
 

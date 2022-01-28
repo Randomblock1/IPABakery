@@ -5,13 +5,11 @@ from getopt import getopt, GetoptError
 import subprocess
 from sys import argv
 from warnings import simplefilter
-from debian import deb822
-from requests import get
 import shutil
 import os
 import sys
 sys.path.append('../../')
-from libbakery import fetchdylib, headers
+import libbakery
 
 LocalDylibs = False
 ipa_path = 'com.google.ios.youtube.ipa'
@@ -46,11 +44,9 @@ for opt, arg in opts:
 
 if not LocalDylibs:
     print('Getting latest dylibs...')
-    raw_packages = get('https://apt.alfhaily.me/Packages',
-                       headers=headers).content
-    KeepFiles = True
-    fetchdylib('https://apt.alfhaily.me/', 'me.alfhaily.cercube',
-               'Cercube.dylib', raw_packages, True)
+    packages = libbakery.fetchpackages('https://apt.alfhaily.me/')
+    libbakery.fetchdylib('https://apt.alfhaily.me/', 'me.alfhaily.cercube',
+               'Cercube.dylib', packages, True)
     os.rename('tmp/Cercube', 'Cercube')
     shutil.rmtree('tmp')
     if not os.path.isdir('Resources'):

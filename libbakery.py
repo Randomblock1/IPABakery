@@ -1,5 +1,3 @@
-from contextlib import nullcontext
-from getopt import GetoptError
 import os
 import shutil
 from debian import deb822
@@ -14,7 +12,7 @@ headers = {
     'Accept-Language': 'en-US,*',
 }
 
-def fetchrepo(repo):
+def fetchpackages(repo):
     compressions = ['', '.xz', '.gz', '.bz2', '.lzma']
     for extension in compressions:
         try:
