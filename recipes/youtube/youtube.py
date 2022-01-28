@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # Randomblock1's AutoTweaker script.
 # Downloads latest debs and uses them to tweak IPAs.
+import libbakery
 from getopt import getopt, GetoptError
 import subprocess
 from sys import argv
@@ -9,7 +10,6 @@ import shutil
 import os
 import sys
 sys.path.append('../../')
-import libbakery
 
 LocalDylibs = False
 ipa_path = 'com.google.ios.youtube.ipa'
@@ -46,7 +46,7 @@ if not LocalDylibs:
     print('Getting latest dylibs...')
     packages = libbakery.fetchpackages('https://apt.alfhaily.me/')
     libbakery.fetchdylib('https://apt.alfhaily.me/', 'me.alfhaily.cercube',
-               'Cercube.dylib', packages, True)
+                         'Cercube.dylib', packages, True)
     os.rename('tmp/Cercube', 'Cercube')
     shutil.rmtree('tmp')
     if not os.path.isdir('Resources'):

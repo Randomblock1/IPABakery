@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # Randomblock1's AutoTweaker script.
 # Downloads latest debs and uses them to tweak IPAs.
+import libbakery
 from getopt import getopt, GetoptError
 from subprocess import run
 from sys import argv
 from warnings import simplefilter
 import sys
 sys.path.append('../../')
-import libbakery
 
 LocalDylibs = False
 ipa_path = 'com.spotify.client.ipa'
@@ -44,11 +44,12 @@ if not LocalDylibs:
     print('Getting latest dylibs...')
     packages = libbakery.fetchpackages('https://repo.dynastic.co/')
     libbakery.fetchdylib('https://repo.dynastic.co/', 'com.spos',
-               'Sposify.dylib', packages)
+                         'Sposify.dylib', packages)
 
-    packages = libbakery.fetchpackages('https://julio.hackyouriphone.org/Packages')
+    packages = libbakery.fetchpackages(
+        'https://julio.hackyouriphone.org/Packages')
     libbakery.fetchdylib('https://julio.hackyouriphone.org/',
-               'com.julioverne.spotilife', 'Spotilife.dylib', packages)
+                         'com.julioverne.spotilife', 'Spotilife.dylib', packages)
     print('All dylibs successfully fetched.')
 
 

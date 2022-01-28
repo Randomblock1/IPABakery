@@ -12,6 +12,7 @@ headers = {
     'Accept-Language': 'en-US,*',
 }
 
+
 def fetchpackages(repo):
     compressions = ['', '.xz', '.gz', '.bz2', '.lzma']
     for extension in compressions:
@@ -22,6 +23,7 @@ def fetchpackages(repo):
         except HTTPError:
             continue
     return result.content
+
 
 def fetchdylib(repo, package_id, dylib, packages, keepfiles=False):
     prev_version = '0'
