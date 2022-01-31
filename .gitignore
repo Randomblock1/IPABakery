@@ -296,5 +296,5 @@ dmypy.json
 *.ipa
 *.dylib
 *.bundle
-Resources
-packages
+Resources/
+packages/
