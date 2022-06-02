@@ -8,14 +8,14 @@ You need:
 
 - [Theos and Theos Jailed](https://github.com/kabiroberai/theos-jailed/wiki/Installation)
 - Python3 and pip
+
   If you are going to obtain your own IPA files:
 - [ipatool](https://github.com/majd/ipatool)
 
 ## Setup
 
-- `git clone --recursive https://github.com/randomblock1/IPABakery` (`--recursive` makes sure the submodule is ready!)
+- `git clone https://github.com/randomblock1/IPABakery`
 - `python3 -m pip install -r requirements.txt`
-- `python3 -m pip install -r frida-ios-dump/requirements.txt`
 
 ## Usage
 
